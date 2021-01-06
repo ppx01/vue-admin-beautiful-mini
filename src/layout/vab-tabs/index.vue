@@ -20,6 +20,9 @@
       <a-dropdown>
         <template v-slot:overlay>
           <a-menu @click="handleClick">
+            <a-menu-item key="updateTabs">
+              <a>刷新</a>
+            </a-menu-item>
             <a-menu-item key="closeOthersTabs">
               <a>关闭其他</a>
             </a-menu-item>
@@ -51,6 +54,7 @@
     components: {
       DownOutlined,
     },
+    inject: ['reload'],
     data() {
       return {
         affixTabs: [],
@@ -124,6 +128,9 @@
       },
       handleClick({ key }) {
         switch (key) {
+          case 'updateTabs':
+            this.updateTabs()
+            break
           case 'closeOthersTabs':
             this.closeOthersTabs()
             break
@@ -137,6 +144,9 @@
             this.closeAllTabs()
             break
         }
+      },
+      async updateTabs() {
+        this.reload()
       },
       async closeSelectedTag(view) {
         await this.delVisitedRoute(view)

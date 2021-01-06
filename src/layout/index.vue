@@ -47,7 +47,7 @@
         </a-row>
       </a-layout-header>
       <vab-tabs />
-      <vab-content />
+      <vab-content v-if="isRouterAlive"></vab-content>
     </a-layout>
   </a-layout>
 </template>
@@ -70,9 +70,15 @@
       MenuUnfoldOutlined,
       MenuFoldOutlined,
     },
+    provide() {
+      return {
+        reload: this.reload,
+      }
+    },
     data() {
       return {
         selectedKeys: ['/index'],
+        isRouterAlive: true,
       }
     },
     computed: {
@@ -114,6 +120,12 @@
         handleFoldSideBar: 'settings/foldSideBar',
         toggleCollapse: 'settings/toggleCollapse',
       }),
+      reload() {
+        this.isRouterAlive = false
+        this.$nextTick(() => {
+          this.isRouterAlive = true
+        })
+      },
       handleLayouts() {
         const width = document.body.getBoundingClientRect().width
         if (this.width !== width) {
